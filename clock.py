@@ -26,7 +26,6 @@ import sys
 from datetime import datetime, timedelta
 import argparse
 import pandas as pd
-import numpy as np
 
 
 # general to-dos and ideas
@@ -35,6 +34,7 @@ import numpy as np
 # TODO: Use requirements.txt instead of imports
 # TODO: Only calculate values for new entries and do not recalculate entire df
 # TODO: Have additional_break time as separate column (for small breaks)
+# TODO: Proper clean-up with pylint and flake8
 
 
 # constants
@@ -117,7 +117,7 @@ def update_clock(column_name, clock_df):
 
             # homeoffice check
             print('Where did you work? (ho = home office, o = office, bib = bib, cowo = coworking, bib = library')
-            print( 'For mixes write e.g. ho_cowo, meaning ho in the morning and cowo in the afternoon.')
+            print('For mixes write e.g. ho_cowo, meaning ho in the morning and cowo in the afternoon.')
             location = input()
             clock_df.loc[len(clock_df)-1, 'location'] = location
 
@@ -313,7 +313,7 @@ def correction(clock_df):
 
 def show(clock_df):
     """Show last 5 rows."""
-    print(clock_df.iloc[:,:-3].tail())
+    print(clock_df.iloc[:, :-3].tail())
 
 
 def create_argparser():
@@ -345,7 +345,7 @@ def report(clock_df):
             + clock_df[column].dt.minute / 60
             + clock_df[column].dt.second / 3600
         )
-    
+
     # one hot encoding
     clock_df = pd.get_dummies(clock_df, columns=["location"])
     clock_df["weekday"] = pd.to_datetime(clock_df["date"]).dt.day_name()
@@ -406,4 +406,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
